@@ -7,3 +7,16 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
+
+<div>@m_ReverseMessage</div>
+
+
+@inject IJSRuntime JS
+@code {
+    string? m_ReverseMessage;
+    protected override async Task OnInitializedAsync()
+    {
+        var mod = await JS.InvokeAsync<IJSObjectReference>("import", "./js/interop.js");
+        m_ReverseMessage = await mod.InvokeAsync<string>("console_log", "hoge");
+    }
+}
